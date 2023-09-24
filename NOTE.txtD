@@ -1,0 +1,3 @@
+export should add in env too (it adds in the export)
+link ech"o"
+export should add and execute "ls -a -l" as ls -a -l

@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 13:09:50 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/24 21:50:20 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 17:40:49 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,12 @@ int is_buildin(t_cmd *cmd)
 int execution_builtin(t_cmd *cmd, int i)
 {
     int check = 0;
-    
-    if(!ft_strcmp(cmd[i].cmd[0], "echo"))
+
+    if(!ft_strcmp(cmd[i].cmd[0], "echo") )
+    {
         check = ft_echo(cmd, cmd[i].fd_out);
+    }
+    
     else if(!ft_strcmp(cmd[i].cmd[0], "pwd"))
         check = ft_pwd(cmd[i].fd_out);
     else if(!ft_strcmp(cmd[i].cmd[0],"env"))

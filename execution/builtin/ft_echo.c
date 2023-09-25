@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:52:08 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/21 17:22:51 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 22:34:33 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int ft_echo(t_cmd *cmd, int fd_out)
 
     i = 1;
     n = 0;
-    if (cmd->cmd[i] && ft_strcmp(cmd->cmd[i], "-n") == 0)
+    if (cmd->cmd[i] && ft_strcmp(cmd->cmd[i], "-n") == 0 )
     {
         n = 1;
         i++;

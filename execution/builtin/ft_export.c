@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 21:50:34 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/24 20:48:54 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 16:29:33 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void  add_new_var(t_env *env, char **var)
     t_env *head;
     new = malloc(sizeof(t_env));
     new->name = ft_strdup(var[0]);
-    printf("var[0] = %s\n", var[0]);
-    printf("var[1] = %s\n", var[1]);
     new->value = ft_strdup(var[1]);
     new->next = NULL;
     if (!env)
@@ -45,17 +43,21 @@ int check_if_exist(t_cmd *cmd, char **var)
 }
 char **check_invalid_var(char *str)
 {
-    if (str[0] && !ft_isalpha(str[0]) && str[0] != '_')
+    if (str[0] && !ft_isalpha(str[0]) && str[0] != '_' )
     {
-        printf("bash: export: `%s': not a valid identifier\n", str);
+        ft_putstr_fd("bash: export: `", 2);
+        ft_putstr_fd(str, 2);
+        ft_putstr_fd("': not a valid identifier\n", 2);
         return (NULL);
     }
     int i = 0;
     while (str[i] && str[i] != '=')
         i++;
-    if (str[i - 1] == ' ')
+    if (str[i - 1] == '-')
     {
-        printf("bash: export: `%s': not a valid identifier\n", str);
+       ft_putstr_fd("bash: export: `", 2);
+        ft_putstr_fd(str, 2);
+        ft_putstr_fd("': not a valid identifier\n", 2);
         return (NULL);
     }
     return (ft_split(str, '='));
@@ -68,7 +70,9 @@ char update_env(t_env *env, char **str)
         if (ft_strcmp(env->name, str[0]) == 0)
         {
             if (env->value && !str[1]) {
-                printf("env found and already has a value\n");
+                // ft_putstr_fd("bash: export: `", 2);
+                // ft_putstr_fd(str[0], 2);
+                // ft_putstr_fd("': not a valid identifier\n", 2);
                 return 0;
             }
             free(env->value);
@@ -97,12 +101,12 @@ int ft_export(t_cmd *cmd )
             {
                 if (!check_if_exist(cmd, var)) 
                 {
-                    printf("var doesnt exist, appending to env\n");
+                    // ft_putstr_fd("var does not exist, adding var\n", 2);
                     add_new_var(cmd->env, var);
                 }
-                else
+                if(check_if_exist(cmd, var))
                 {
-                    printf("var exists, updating var\n");
+                    // ft_putstr_fd("var exist, updating var\n", 2);
                     update_env(cmd->env, var);
                 }
             }

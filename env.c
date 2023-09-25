@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:11:51 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/24 21:43:27 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 16:21:08 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,19 @@ void print_env(t_env *env,char *cmd)
     {   
         if (ft_strcmp(cmd,"env") == 0)
         {
-            if(env->value)
+            if(env->value && ft_strlen(env->value) > 0)
                 printf("%s=%s\n",env->name,env->value);
+            
         }
         if(ft_strcmp(cmd,"export") == 0)
         {
-            if(env->value)
+            if(env->value && ft_strlen(env->value) > 0)
                 printf("declare -x %s=\"%s\"\n",env->name,env->value);
             else
                 printf("declare -x %s\n",env->name);
         }
         env=env->next;
     }
-    // printf("Mental retardation\n");
 }
 
 void take_env(char *str,int *i,t_lexer *lx)

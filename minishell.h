@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:15:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/24 22:37:09 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 17:33:49 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct envirement
     char *name;
     char *value;
     struct envirement *next ;
+	struct envirement *prev;
 }t_env;
 // typedef struct c {
 //     char** argv;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slazar <slazar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:25:45 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/14 15:02:18 by slazar           ###   ########.fr       */
+/*   Updated: 2023/09/25 17:40:19 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int ft_strcmp(char *s1,char *s2)
 		s1++;
 		s2++;
 	}
-	return (0);
+	return (*s1 - *s2);
 }
 int if_token(char c)
 {

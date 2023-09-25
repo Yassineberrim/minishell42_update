@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 19:00:58 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/24 04:11:47 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 13:46:06 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int ft_exit(t_cmd* cmd)
             exit(ft_atoi(argv[1]));
         else
         {
-            printf("minishell: exit: %s: numeric argument required\n", argv[1]);
+            ft_putstr_fd("minishell: exit: ", 2);
+            ft_putstr_fd(argv[1], 2);
+            ft_putstr_fd(": numeric argument required\n", 2);
             exit(255);
         }
     }

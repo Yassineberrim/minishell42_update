@@ -6,13 +6,13 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:24:41 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/24 22:39:10 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 22:27:47 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"minishell.h"
 
-// hy younes
+
 int only_sp_tab(char *line)
 {
 	while (*line && ( *line == ' ' || *line == '\t'))
@@ -132,19 +132,19 @@ t_cmd *commands(t_lexer *lx,t_cmd *cmd)
 	}
 	cmd[i].cmd[j] = NULL;
 	max_i = i;
-	i = 0;
-	while(cmd[i].cmd)
-	{
-		printf("cmd[%d] = ",i);
-		j = 0;
-		while(cmd[i].cmd[j])
-		{
-			printf("%s ",cmd[i].cmd[j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
+	// i = 0;
+	// while(cmd[i].cmd)
+	// {
+	// 	// printf("cmd[%d] = ",i);
+	// 	j = 0;
+	// 	while(cmd[i].cmd[j])
+	// 	{
+	// 		printf("%s ",cmd[i].cmd[j]);
+	// 		j++;
+	// 	}
+	// 	printf("\n");
+	// 	i++;
+	// }
 	i = 0;
 	while (i < max_i)
 	{
@@ -187,10 +187,12 @@ int main(int __unused ac,char **av,char **envirement)
 				join_in_quote_and_word(&lx);
 				delete_white_space(&lx);
 				cmd = commands(&lx,cmd);
+				printf("cmd = %s\n",cmd->cmd[0]);
+				printf("cmd = %s\n",cmd->cmd[1]);
+				printf("cmd = %s\n",cmd->cmd[2]);
 				cmd->env = env;
 				if(is_buildin(cmd))
 				{
-					printf("is buildin\n");
 					execution_builtin(cmd,0);
 				}
 				else

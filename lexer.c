@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slazar <slazar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 10:09:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/20 20:37:31 by slazar           ###   ########.fr       */
+/*   Updated: 2023/09/25 15:19:54 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,16 +268,15 @@ void Join_node_quotes(char *content, t_node **first, t_node **last, enum e_state
 	if(!(*first))
 		lx->head = new;
 }
-void take_in_dq(t_node **cur, enum e_state state, t_lexer *lx, enum e_token type)
+void take_in_dq(t_node **cur, enum e_state state, t_lexer *lx)
 {
 	char *new_cont;
 	t_node *tmp;
 	t_node *ptr;
 	tmp = (*cur);
-	
 	new_cont = ft_calloc(1,1);
 	(*cur) = (*cur)->next;
-	while ((*cur) && (*cur)->type == type)
+	while ((*cur) && (*cur)->state == state)
 	{
 		new_cont = ft_strjoin(new_cont,(*cur)->content);
 		(*cur) = (*cur)->next;
@@ -296,13 +295,12 @@ void join_quotes(t_lexer *lx)
 {
 	t_node *cur;
 	cur = lx->head;
-
-	while (cur)
+	while(cur)
 	{
-		if (cur->type == DOUBLE_QUOTE )
-			take_in_dq(&cur, IN_DQUOTE,lx,DOUBLE_QUOTE);
-		else if (cur->type == QOUTE)
-			take_in_dq(&cur ,IN_SQUOTE,lx,QOUTE);
+		if(cur->type == DOUBLE_QUOTE)
+			take_in_dq(&cur,IN_DQUOTE,lx);
+		else if(cur->type == QOUTE)
+			take_in_dq(&cur,IN_SQUOTE,lx);
 		else
 			cur = cur->next;
 	}
@@ -357,7 +355,7 @@ void var_from_env(t_env *env,t_lexer *lx)
 	cur = lx->head;
 	while (cur)
 	{
-		if(cur->type == ENV && (cur->state == GENERAL || cur->state == IN_DQUOTE))
+		if(cur->type == ENV && (cur->state == GENERAL || cur->state == IN_DQUOTE) && ft_strlen(cur->content) > 1)
 		{
 			cur->content = ft_strdup(get_env(env,cur->content));
 			cur->len = ft_strlen(cur->content);

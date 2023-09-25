@@ -6,38 +6,73 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 19:09:26 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/23 15:38:03 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 16:16:41 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../../minishell.h"
 
-void ft_clear_env(t_env **env)
+void ft_clear_env(t_env **env, t_env *prev)
 {
-    t_env *tmp;
-    tmp = *env;
-    *env = (*env)->next;
+    if (prev)
+        prev->next = (*env)->next;
+    t_env *tmp = *env;
+    *env = (*env)->next;    
     free(tmp->name);
+    free(tmp->value);
     free(tmp);
 }
 
 int ft_unset(t_cmd *cmd)
 {
-    char **var = cmd->cmd;
+    char **argv = cmd->cmd;
     t_env *env = cmd->env;
-    t_env *tmp;
-    
-    while(env)
+    t_env *prev;
+    int i = 0;
+
+    prev = 0;
+    while (env)
     {
-        if (ft_strcmp(env->name, var[1]) == 0)
+        i = 0;
+        while (argv[i])
         {
-            tmp->next = env->next;
-            free(env->value);
-            free(env->name);
-            free(env);
+            if (ft_strcmp(env->name, argv[i]) == 0)
+            {
+                ft_clear_env(&env, prev);
+                i = -1;
+                break;
+            }
+            i++;
         }
-        tmp = env;
-        env = env->next;
+        if (i != -1)
+        {
+            prev = env;
+            env = env->next;
+        }
     }
+
+    // while (argv[i])
+    // {
+        
+    //     i++;
+    // }
+
+    // int i = 1;
+    // int j;
+    // while(argv[i])
+    // {
+    //     j = 0;
+    //     while (env)
+    //     {
+    //         if (ft_strcmp(env->name, argv[i]) == 0)
+    //         {
+    //             ft_clear_env(&env);
+    //             break;
+    //         }
+    //         env = env->next;
+    //     }
+    //     env = cmd->env;
+    //     i++;
+    // }
     return (0);
 }

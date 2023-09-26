@@ -6,13 +6,13 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:17 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/25 22:24:22 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/26 15:58:38 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int exit_status(int status) 
+int exit_status(int status)
 {
     return WEXITSTATUS(status);
 }
@@ -97,13 +97,13 @@ int execution_proto(t_cmd *cmd, char** env)
     int exit_status = 0;
     int pipe_fd[2];
 
+
    while (cmd)
    {
         char* cmd_abs_path = find_abs_path(cmd->cmd[0]);
-            
+        
         if (cmd->next) 
         {
-            ft_putstr_fd("pipe\n", 2);
             pipe(pipe_fd);
             cmd->fd_out = pipe_fd[1];
             cmd->next->fd_in = pipe_fd[0];

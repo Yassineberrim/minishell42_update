@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 19:09:26 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/25 16:16:41 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 23:28:42 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,5 @@ int ft_unset(t_cmd *cmd)
             env = env->next;
         }
     }
-
-    // while (argv[i])
-    // {
-        
-    //     i++;
-    // }
-
-    // int i = 1;
-    // int j;
-    // while(argv[i])
-    // {
-    //     j = 0;
-    //     while (env)
-    //     {
-    //         if (ft_strcmp(env->name, argv[i]) == 0)
-    //         {
-    //             ft_clear_env(&env);
-    //             break;
-    //         }
-    //         env = env->next;
-    //     }
-    //     env = cmd->env;
-    //     i++;
-    // }
     return (0);
 }

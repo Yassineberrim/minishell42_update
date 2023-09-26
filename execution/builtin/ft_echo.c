@@ -6,12 +6,28 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:52:08 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/25 22:34:33 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/26 16:26:33 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../../minishell.h"
 
+
+int check_flag(char *str)
+{
+    int i;
+
+    i = 0;
+    if(str[i++] != '-')
+        return (0);
+    while(str[i])
+    {
+        if(str[i] != 'n')
+            return (0);
+        i++;
+    }
+    return (1);
+}
 int ft_echo(t_cmd *cmd, int fd_out)
 {
     int i;
@@ -19,7 +35,7 @@ int ft_echo(t_cmd *cmd, int fd_out)
 
     i = 1;
     n = 0;
-    if (cmd->cmd[i] && ft_strcmp(cmd->cmd[i], "-n") == 0 )
+    if (cmd->cmd[i] && check_flag(cmd->cmd[i]) )
     {
         n = 1;
         i++;

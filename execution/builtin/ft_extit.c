@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 19:00:58 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/25 13:46:06 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/25 23:10:48 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 //◦ exit with no options
 
-int is_strdigits(char* str) {
+int is_strdigits(char* str)
+{
     int i = 0;
     while (str[i]) {
         if (!ft_isdigit(str[i]))

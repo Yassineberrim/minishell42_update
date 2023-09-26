@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 10:09:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/25 15:19:54 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/26 18:53:21 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,27 +100,21 @@ void	give_state(t_lexer *lx)
 	{
 		if(cur->type == DOUBLE_QUOTE && cur->next)
 		{
-			// cur->state = IN_DQUOTE;
 			cur = cur->next;
 			while (cur && cur->type != DOUBLE_QUOTE)
 			{
 				cur->state = IN_DQUOTE;
 				cur = cur->next;
 			}
-			// if(cur)
-			// 	cur->state = IN_DQUOTE;
 		}
 		else if(cur->type == QOUTE && cur->next)
 		{
-			// cur->state = IN_SQUOTE;
 			cur = cur->next;
 			while (cur && cur->type != QOUTE)
 			{
 				cur->state = IN_SQUOTE;
 				cur = cur->next;
 			}
-			// if(cur)
-			// 	cur->state = IN_SQUOTE;
 		}
 		if(cur)
 			cur = cur->next;
@@ -348,18 +342,30 @@ char *get_env(t_env *env,char *str)
 	free(s);
 	return(NULL);
 }
+/**/
 void var_from_env(t_env *env,t_lexer *lx)
 {
 	t_node *cur;
-	
 	cur = lx->head;
 	while (cur)
 	{
 		if(cur->type == ENV && (cur->state == GENERAL || cur->state == IN_DQUOTE) && ft_strlen(cur->content) > 1)
 		{
-			cur->content = ft_strdup(get_env(env,cur->content));
-			cur->len = ft_strlen(cur->content);
-			cur->type = WORD;
+			if(cur->content[1] == '?')
+			{
+				free(cur->content);
+				cur->content = ft_strjoin(ft_itoa(g_exit_status),cur->content+2);
+				
+				cur->len = ft_strlen(cur->content);
+				cur->type = ENV;
+			}
+			else
+			{	
+				cur->content = ft_strdup(get_env(env,cur->content));
+				
+				cur->len = ft_strlen(cur->content);
+				cur->type = ENV;
+			}
 		}
 		else
 		cur = cur->next;
@@ -381,8 +387,8 @@ int lexer(char *str, t_lexer *lx, t_env *env)
 	give_state(lx);
 	var_from_env(env,lx);
 	if (syntax_error(lx))
-		return (1);
-	return(0);
+		return (g_exit_status = 258, 1);
+	return(g_exit_status = 0, 0);
 }
 void ft_initialisation(t_lexer *lx)
 {

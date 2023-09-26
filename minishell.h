@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:15:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/25 17:33:49 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/26 18:21:58 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <readline/readline.h>
 # include "my_libft/libft.h"
 
+int g_exit_status;
 enum e_state
 {
 	IN_DQUOTE,
@@ -118,8 +119,6 @@ typedef struct s_lexer
 	t_node	*tail;
 	int		  size;
 }	t_lexer;
-
-
 
 void join_quotes(t_lexer *lx);
 int is_buildin(t_cmd *cmd);

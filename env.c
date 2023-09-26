@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:11:51 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/25 16:21:08 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/26 18:21:42 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void ft_variables(t_env **env,char **envirement)
     int i;
     t_env *new;
     t_env *head;
+    g_exit_status = 0;
     i = 0;
     *env = 0;
     while (envirement[i])
@@ -105,7 +106,7 @@ void take_env(char *str,int *i,t_lexer *lx)
 	char *var;
 	start = *i;
 	(*i)++;
-	while(!is_digits(str[*i]) || !is_alphabet(str[*i]) || str[*i] == '_')
+	while(!is_digits(str[*i]) || !is_alphabet(str[*i]) || str[*i] == '_' || str[*i] == '?')
 		(*i)++;
 	var = ft_strdup_2(str,start,(*i)-1);
 	add_node_to_lexer(lx,var,ENV,GENERAL);

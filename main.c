@@ -6,12 +6,11 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:24:41 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/26 18:17:32 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/28 22:58:21 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"minishell.h"
-
 
 int only_sp_tab(char *line)
 {
@@ -70,9 +69,8 @@ void init_cmd_struct(t_cmd **cmd)
 	(*cmd)->cmd = NULL;
 	(*cmd)->fd_in = 0;
 	(*cmd)->fd_out = 1;
-	(*cmd)->herdoc_fd = 0;
-	(*cmd)->redir.in_file = NULL;
-	(*cmd)->redir.out_file = NULL;
+	// (*cmd)->redir.in_file = NULL;
+	// (*cmd)->redir.out_file = NULL;
 }
 
 void	create_cmd(t_lexer *lx, t_cmd *cmd)
@@ -111,19 +109,20 @@ t_cmd *commands(t_lexer *lx,t_cmd *cmd)
 	
 	i = 0;
 	j = 0;
-	cmd = malloc(sizeof(t_cmd) * (ft_count_cmd(lx) + 2));
-	init_cmd_struct(&cmd);
+	cmd = malloc(sizeof(t_cmd) * (ft_count_cmd(lx) + 1));
 	create_cmd(lx,cmd);
 	cur = lx->head;
 	while(cur)
 	{
+		cmd[i].fd_in = 0;
+		cmd[i].fd_out = 1;
 		if(cur->type == PIPE_LINE)
 		{
 			cmd[i].cmd[j] = NULL;
 			i++;
 			j = 0;
 		}
-		else
+		else 
 		{
 			cmd[i].cmd[j] = ft_strdup(cur->content);
 			j++;
@@ -132,6 +131,7 @@ t_cmd *commands(t_lexer *lx,t_cmd *cmd)
 	}
 	cmd[i].cmd[j] = NULL;
 	max_i = i;
+	
 	i = 0;
 	while (i < max_i)
 	{
@@ -142,7 +142,6 @@ t_cmd *commands(t_lexer *lx,t_cmd *cmd)
 	return(cmd);
 }
 
-
 int main(int __unused ac,char **av,char **envirement)
 {
 	char *line;
@@ -152,13 +151,13 @@ int main(int __unused ac,char **av,char **envirement)
 	(void)cmd;
     (void) av;
     (void) ac;
-	
+	cmd = NULL;
     ft_variables(&env,envirement);
 
 	while (1)
 	{
 		ft_initialisation(&lx);
-		line = readline("minishell ");
+		line = readline("$->minishell ");
 		if (!line)
 			return (1);
 		else if (check_space(line) == 0)
@@ -170,6 +169,7 @@ int main(int __unused ac,char **av,char **envirement)
 				continue;
 			else
 			{
+				// ft_print_lexer(&lx.head);
 				join_quotes(&lx);
 				join_in_quote_and_word(&lx);
 				delete_white_space(&lx);

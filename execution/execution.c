@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:17 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/26 15:58:38 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/28 23:00:38 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,10 @@ void check_redirections(t_cmd* cmd)
 
 int execution_proto(t_cmd *cmd, char** env) 
 {
-    int exit_status = 0;
     int pipe_fd[2];
-
-
    while (cmd)
    {
         char* cmd_abs_path = find_abs_path(cmd->cmd[0]);
-        
         if (cmd->next) 
         {
             pipe(pipe_fd);
@@ -110,35 +106,36 @@ int execution_proto(t_cmd *cmd, char** env)
         }
         if (!cmd_abs_path) 
         {
-            ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(cmd->cmd[0], 2);
-            ft_putstr_fd(": command not found\n", 2);
-            exit_status = 127;
+            g_exit_status = 127;
+            ft_putstr_fd("minishell: command not found\n", 2);
+            if(!cmd->next)
+            {
+                close(pipe_fd[0]);
+                close(pipe_fd[1]);
+                return g_exit_status;
+            }
             cmd = cmd->next;
-            return exit_status;
+            continue;
         }
         check_redirections(cmd);
         cmd->cmd[0] = cmd_abs_path;
         int child_pid = fork();
-        if(child_pid == 0)
+        if (child_pid == 0) 
         {
             if (cmd->fd_out != 1)
             {
                 dup2(cmd->fd_out, 1);
-                close(cmd->fd_out);
+                close(pipe_fd[0]);
+                close(pipe_fd[1]);
             }
             if (cmd->fd_in != 0)
             {
-                dup2(cmd->fd_in, 0);
-                close(cmd->fd_in); 
-            }
-            execve(cmd->cmd[0], cmd->cmd, env);
-            exit(1);
-        }
-        else if (child_pid == -1)
-        {
-            ft_putstr_fd("error forking\n", 2);
-            exit(1);
+                if (dup2(cmd->fd_in, 0) == -1)
+                    perror("hna");
+                close(pipe_fd[0]);
+                close(pipe_fd[1]);
+            } 
+            execve(cmd_abs_path, cmd->cmd, env);
         }
         if (cmd->fd_out != 1)
             close(cmd->fd_out);
@@ -146,6 +143,6 @@ int execution_proto(t_cmd *cmd, char** env)
             close(cmd->fd_in);
         cmd = cmd->next;
    }
-   while (wait(&exit_status) > 0);
-   return WEXITSTATUS(exit_status);
+        while (wait(&g_exit_status) > 0);
+   return g_exit_status;
 }

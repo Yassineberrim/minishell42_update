@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 10:09:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/26 18:53:21 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/27 14:06:20 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,7 +239,7 @@ int	syntax_error(t_lexer *lst)
 	}
 	return (0);
 }
-void Join_node_quotes(char *content, t_node **first, t_node **last, enum e_state state, t_lexer *lx)
+void Join_node(char *content, t_node **first, t_node **last, enum e_state state, t_lexer *lx)
 {
 	t_node *new;
 	
@@ -275,7 +275,7 @@ void take_in_dq(t_node **cur, enum e_state state, t_lexer *lx)
 		new_cont = ft_strjoin(new_cont,(*cur)->content);
 		(*cur) = (*cur)->next;
 	}
-	Join_node_quotes(new_cont,&tmp->prev,cur,state, lx);
+	Join_node(new_cont,&tmp->prev,cur,state, lx);
 	while (tmp && tmp->state == state)
 	{
 		free(tmp->content);
@@ -342,7 +342,35 @@ char *get_env(t_env *env,char *str)
 	free(s);
 	return(NULL);
 }
-/**/
+void ft_split_env(t_lexer *lx)
+{
+	t_node *cur;
+	char **s;
+	int i;
+	
+	cur = lx->head;
+	while (cur)
+	{
+		if(cur->type == ENV )
+		{
+			s = ft_split(cur->content, ' ');
+			if(s[0] && s[1])
+			{
+				free(cur->content);
+				cur->content = ft_strdup(s[0]);
+				cur->len = ft_strlen(cur->content);
+				cur->type = WORD;
+				i = 1;
+				while (s[i])
+				{
+					Join_node(s[i],&cur, &cur->next, GENERAL, lx);
+					i++;
+				}
+			}
+		}
+		cur = cur->next;
+	}
+}
 void var_from_env(t_env *env,t_lexer *lx)
 {
 	t_node *cur;
@@ -362,19 +390,18 @@ void var_from_env(t_env *env,t_lexer *lx)
 			else
 			{	
 				cur->content = ft_strdup(get_env(env,cur->content));
-				
 				cur->len = ft_strlen(cur->content);
 				cur->type = ENV;
 			}
 		}
-		else
 		cur = cur->next;
 	}
+	ft_split_env(lx);
 }
 int lexer(char *str, t_lexer *lx, t_env *env)
 {
 	int i = 0;
-
+	(void)env;
 	while (str && str[i])
 	{
 		if(str[i] && if_token(str[i]) == 1)

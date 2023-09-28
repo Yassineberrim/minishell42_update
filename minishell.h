@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:15:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/26 18:21:58 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/27 15:30:01 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,23 @@ typedef struct envirement
     
 //     // redirections l8r
 // } c
+
+// ls -la > ok.txt > ok2.txt > ok3.txt | cat -e
 typedef struct s_cmd 
 {
-    char** cmd;
-	int fd_in;
-	int fd_out;
-	int has_pipe;
-	out_redirs out_redir_type;
-    in_redirs in_redir_type;
-    char* in_file;
-    char* out_file;
-	int herdoc_fd;
-	t_redir redir;
-	t_env *env;
+    char** cmd; // argv: {"cat", "-e", NULL"} 
+	int argc; // 2
+	int fd_in; // 0
+	int fd_out; // 1
+	int has_pipe; // 0
+	// >> ola >
+	out_redirs out_redir_type; // out_redir = WRITEOUT
+    // << ola <
+	in_redirs in_redir_type; // 0
+    char* in_file; // NULL
+    char* out_file; // ok3.txt
+	int herdoc_fd; 
+	t_env *env; // envierement
     struct s_cmd *next;
 } t_cmd;
 

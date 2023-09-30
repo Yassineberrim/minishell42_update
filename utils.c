@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:25:45 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/25 17:40:19 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/30 00:52:41 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@ char *ft_strdup_2(char *str,int start,int finish)
 	return(dup);
 }
 
-int ft_strcmp(char *s1,char *s2)
+int ft_strcmp(char *s1, char *s2)
 {
-	while (s1 && s2 && *s1 && *s2)
-	{
-		if(*s1 - *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
+	int i = 0;
+	if(!s1 || !s2)
+		return 1;
+	while(s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
+	{	
+		i++;
 	}
-	return (*s1 - *s2);
-}
+	return (s1[i] - s2[i]);
+}	
 int if_token(char c)
 {
 	if (( c == '\'' || c == '\"' || c == '\\' 

@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 10:09:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/27 14:06:20 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/29 23:36:08 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ int pipe_err(t_node *elem)
 
 	next = skip_spaces(elem->next,'r');
 	prev = skip_spaces(elem->prev,'l');
-	if(!next || !prev || prev->type != WORD || (next->type != WORD && if_redirection(next->type) == 0))
+	if(!next || !prev || (next->type != WORD && if_redirection(next->type) == 0))
 		return (1);
 	return(0);
 }

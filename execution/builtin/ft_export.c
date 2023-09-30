@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 21:50:34 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/25 16:29:33 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/29 23:16:59 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,8 @@ char update_env(t_env *env, char **str)
        
         if (ft_strcmp(env->name, str[0]) == 0)
         {
-            if (env->value && !str[1]) {
-                // ft_putstr_fd("bash: export: `", 2);
-                // ft_putstr_fd(str[0], 2);
-                // ft_putstr_fd("': not a valid identifier\n", 2);
+            if (env->value && !str[1])
+            {
                 return 0;
             }
             free(env->value);
@@ -101,12 +99,10 @@ int ft_export(t_cmd *cmd )
             {
                 if (!check_if_exist(cmd, var)) 
                 {
-                    // ft_putstr_fd("var does not exist, adding var\n", 2);
                     add_new_var(cmd->env, var);
                 }
                 if(check_if_exist(cmd, var))
                 {
-                    // ft_putstr_fd("var exist, updating var\n", 2);
                     update_env(cmd->env, var);
                 }
             }

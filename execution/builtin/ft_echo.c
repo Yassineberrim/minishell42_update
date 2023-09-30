@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:52:08 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/28 22:47:36 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/30 01:21:47 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int check_flag(char *str)
     }
     return (1);
 }
-/*echo -nnnnnnnnnnnnnnnnnnnnnn -nnnnnnnnn ssssss*/
+
 int ft_echo(t_cmd *cmd, int fd_out)
 {
     int i;

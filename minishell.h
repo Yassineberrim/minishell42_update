@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slazar <slazar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:15:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/27 15:30:01 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/29 02:34:22 by slazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct envirement
     struct envirement *next ;
 	struct envirement *prev;
 }t_env;
+
 // typedef struct c {
 //     char** argv;
 //     int in;

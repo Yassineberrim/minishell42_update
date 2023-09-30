@@ -6,7 +6,7 @@ SRCS = lexer.c main.c utils.c env.c ./execution/builtin_utils.c ./execution/buil
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra #-fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=address -g
 
 OBJS = ${SRCS:.c=.o} $(LIBFT)
 

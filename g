@@ -1,7 +1,3 @@
-&1
-
-&11
-&3
 Makefile
 a
 c
@@ -17,8 +13,6 @@ minishell
 minishell.h
 my_libft
 ok
-r
 signal.c
-t
 utils.c
 utils.o

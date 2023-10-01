@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slazar <slazar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:15:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/29 02:34:22 by slazar           ###   ########.fr       */
+/*   Updated: 2023/09/30 22:27:12 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 #define MINISHELL_H
 
 #include"minishell.h"
-# include <stdio.h>
-# include <signal.h>
-# include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
 # include <dirent.h>
 # include <fcntl.h>
 # include <errno.h>
+# include "my_libft/libft.h"
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include "my_libft/libft.h"
+# include <signal.h>
+# include <stdlib.h>
 
 int g_exit_status;
 enum e_state

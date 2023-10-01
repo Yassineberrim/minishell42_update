@@ -7,7 +7,9 @@ SRCS = lexer.c main.c utils.c env.c ./execution/builtin_utils.c ./execution/buil
 CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=address -g
-
+LDFLAGS = -lreadline 
+RLFLGS = -L/goinfre/yberrim/homebrew/opt/readline/lib -lreadline #-fsanitize=address
+RLOFLGS = -L/goinfre/yberrim/homebrew/opt/readline/include
 OBJS = ${SRCS:.c=.o} $(LIBFT)
 
 all : $(NAME)
@@ -20,7 +22,7 @@ libft_clean:
 libft_re: libft_clean my_libft
 
 $(NAME) : $(OBJS) $(LIBFT) minishell.h
-		$(CC) -fsanitize=address -g $(FLAGS)  $(OBJS)  -o $(NAME) -I $(LIBFT) -lreadline
+		$(CC) -fsanitize=address -g $(FLAGS) $(OBJS)  -o $(NAME) -I $(LIBFT) $(RLFLGS) $(LDFLAGS)
 clean :
 	rm -rf $(OBJS)
 

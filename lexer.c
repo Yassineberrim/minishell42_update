@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 10:09:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/29 23:36:08 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/30 22:12:16 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ int	redir_err(t_node *ptr)
 	t_node	*nxt;
 
 	nxt = skip_spaces(ptr->next, 'r');
-	if(nxt)
 	if (!nxt || (nxt->type != WORD && nxt->type != ENV && \
 		nxt->type != DOUBLE_QUOTE && nxt->type != QOUTE))
 			return (1);
@@ -342,35 +341,7 @@ char *get_env(t_env *env,char *str)
 	free(s);
 	return(NULL);
 }
-void ft_split_env(t_lexer *lx)
-{
-	t_node *cur;
-	char **s;
-	int i;
-	
-	cur = lx->head;
-	while (cur)
-	{
-		if(cur->type == ENV )
-		{
-			s = ft_split(cur->content, ' ');
-			if(s[0] && s[1])
-			{
-				free(cur->content);
-				cur->content = ft_strdup(s[0]);
-				cur->len = ft_strlen(cur->content);
-				cur->type = WORD;
-				i = 1;
-				while (s[i])
-				{
-					Join_node(s[i],&cur, &cur->next, GENERAL, lx);
-					i++;
-				}
-			}
-		}
-		cur = cur->next;
-	}
-}
+
 void var_from_env(t_env *env,t_lexer *lx)
 {
 	t_node *cur;
@@ -379,11 +350,9 @@ void var_from_env(t_env *env,t_lexer *lx)
 	{
 		if(cur->type == ENV && (cur->state == GENERAL || cur->state == IN_DQUOTE) && ft_strlen(cur->content) > 1)
 		{
-			if(cur->content[1] == '?')
+			if(cur->content[1] == '?' )
 			{
-				free(cur->content);
 				cur->content = ft_strjoin(ft_itoa(g_exit_status),cur->content+2);
-				
 				cur->len = ft_strlen(cur->content);
 				cur->type = ENV;
 			}
@@ -396,8 +365,8 @@ void var_from_env(t_env *env,t_lexer *lx)
 		}
 		cur = cur->next;
 	}
-	ft_split_env(lx);
 }
+
 int lexer(char *str, t_lexer *lx, t_env *env)
 {
 	int i = 0;

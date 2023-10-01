@@ -1,0 +1,28 @@
+total 336
+-rw-r--r--   1 yberrim  candidates      0 Oct  1 01:25 &1
+
+-rw-r--r--   1 yberrim  candidates      0 Oct  1 01:25 &11
+-rw-r--r--   1 yberrim  candidates      0 Oct  1 01:25 &3
+drwxr-xr-x  26 yberrim  candidates    884 Oct  1 01:37 .
+drwxr-xr-x  29 yberrim  candidates    986 Oct  1 01:14 ..
+drwxr-xr-x  13 yberrim  candidates    442 Sep 30 18:59 .git
+-rw-r--r--   1 yberrim  candidates    967 Sep 30 22:47 Makefile
+-rw-r--r--   1 yberrim  candidates    139 Oct  1 01:28 a
+-rw-r--r--   1 yberrim  candidates    124 Oct  1 01:16 c
+-rw-r--r--   1 yberrim  candidates   2891 Sep 29 17:52 env.c
+-rw-r--r--   1 yberrim  candidates   7048 Oct  1 01:16 env.o
+drwxr-xr-x   7 yberrim  candidates    238 Oct  1 01:35 execution
+-rw-r--r--   1 yberrim  candidates    126 Oct  1 01:17 g
+-rw-r--r--   1 yberrim  candidates  10606 Sep 30 22:12 lexer.c
+-rw-r--r--   1 yberrim  candidates  20868 Oct  1 01:16 lexer.o
+-rw-r--r--   1 yberrim  candidates   6619 Oct  1 00:58 main.c
+-rw-r--r--   1 yberrim  candidates  15912 Oct  1 01:16 main.o
+-rwxr-xr-x   1 yberrim  candidates  45120 Oct  1 01:35 minishell
+-rw-r--r--   1 yberrim  candidates   4404 Sep 30 22:27 minishell.h
+drwxr-xr-x  82 yberrim  candidates   2788 Oct  1 01:16 my_libft
+-rw-r--r--   1 yberrim  candidates      0 Oct  1 01:37 ok
+-rw-r--r--   1 yberrim  candidates    128 Oct  1 01:23 r
+-rw-r--r--   1 yberrim  candidates   1447 Sep 30 20:27 signal.c
+-rw-r--r--   1 yberrim  candidates    141 Oct  1 01:28 t
+-rw-r--r--   1 yberrim  candidates   1646 Sep 30 00:52 utils.c
+-rw-r--r--   1 yberrim  candidates   4280 Oct  1 01:16 utils.o

@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:24:41 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/30 18:44:37 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/01 00:58:24 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,9 @@ t_cmd *commands(t_lexer *lx)
 			j = 0;
 			cmd = cmd->next;
 		}
-		else if (cur->type == REDIR_IN || cur->type == REDIR_OUT || cur->type == D_REDIR_OUT || cur->type == HERE_DOC || (cur->type == WORD && cur->prev && (cur->prev->type == REDIR_IN || cur->prev->type == REDIR_OUT || cur->prev->type == D_REDIR_OUT || cur->prev->type == HERE_DOC)))
+		else if (cur->type == REDIR_IN || cur->type == REDIR_OUT || cur->type == D_REDIR_OUT 
+		|| cur->type == HERE_DOC || (cur->type == WORD && cur->prev && (cur->prev->type == REDIR_IN 
+		|| cur->prev->type == REDIR_OUT || cur->prev->type == D_REDIR_OUT || cur->prev->type == HERE_DOC)))
 		{
 			cur = cur->next->next;
 			continue;
@@ -191,15 +193,6 @@ t_cmd *commands(t_lexer *lx)
 		cur = cur->next;
 	}
 	cmd->cmd[j] = NULL;
-	// max_i = i;
-	
-	// i = 0;
-	// while (i < max_i)
-	// {
-	// 	cmd[i].next = &cmd[i + 1];
-	// 	i++;
-	// }
-	// cmd[i].next = NULL;
 	return(head);
 }
 
@@ -244,6 +237,28 @@ void print_list(t_cmd* cmd) {
 	}
 }
 
+void sig_handler(int i)
+{
+	if(i == SIGINT)
+	{
+		printf("\n");
+		rl_initialize();
+		rl_on_new_line();
+		// rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+void setup_signal_handlers()
+{
+    signal(SIGINT, sig_handler);
+    struct sigaction sa;
+
+    sa.sa_handler = sig_handler;
+    sa.sa_flags = 0;
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
+    signal(SIGQUIT, SIG_IGN);
+}
 int main(int __unused ac,char __unused **av,char **envirement)
 {
 	char *line;
@@ -253,7 +268,7 @@ int main(int __unused ac,char __unused **av,char **envirement)
 
 	cmd = NULL;
     ft_variables(&env,envirement);
-
+	setup_signal_handlers();
 	while (1)
 	{
 		ft_initialisation(&lx);
@@ -274,6 +289,7 @@ int main(int __unused ac,char __unused **av,char **envirement)
 				delete_white_space(&lx);
 				cmd = commands(&lx);
 				cmd->env = env;		
+				//print_list(cmd);
 				execution_proto(cmd, envirement);
 			}
 		}

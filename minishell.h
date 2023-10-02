@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:15:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/09/30 22:27:12 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/02 20:42:28 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct envirement
 typedef struct s_cmd 
 {
     char** cmd; // argv: {"cat", "-e", NULL"} 
+	char *cmd_path;
 	int argc; // 2
 	int fd_in; // 0
 	int fd_out; // 1
@@ -135,6 +136,11 @@ int ft_cd(t_cmd *cmd, int fd);
 int ft_unset(t_cmd *cmd);
 int execution_proto(t_cmd *cmd, char** env);
 int ft_exit(t_cmd *cmd);
+void	add_new_var(t_env *env, char **var);
+int	check_if_exist(t_cmd *cmd, char **var);
+char* find_abs_path(char* cmd);
+char	**check_invalid_var(char *str);
+void check_redirections(t_cmd* cmd) ;
 // void creat_cmd(t_lexer *lx,t_cmd *cmd);
 
 /*-----------------utils-------------------*/

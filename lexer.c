@@ -10,17 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
+#include "minishell.h"
 
-void add_node_to_lexer(t_lexer *lx,char *word,enum e_token token,enum e_state state)
+void	add_node_to_lexer(t_lexer *lx, char *word, enum e_token token,
+		enum e_state state)
 {
-	t_node *new;
-	
+	t_node	*new;
+
 	new = malloc(sizeof(t_node));
 	if (!new)
-		return;
+		return ;
 	new->content = word;
-	new->type = token ;
+	new->type = token;
 	new->len = ft_strlen(word);
 	new->next = NULL;
 	new->prev = NULL;
@@ -31,74 +32,79 @@ void add_node_to_lexer(t_lexer *lx,char *word,enum e_token token,enum e_state st
 		new->prev = lx->tail;
 	}
 	lx->tail = new;
-	if(!lx->head)
+	if (!lx->head)
 		lx->head = new;
 	lx->size += 1;
 }
 
-void take_token(char *str,int *i,t_lexer *lx)
+void	take_token(char *str, int *i, t_lexer *lx)
 {
-	char *token;
-	if(str[*i] == ENV)
+	char	*token;
+
+	if (str[*i] == ENV)
 	{
-		take_env(str,i,lx);
-		return;
+		take_env(str, i, lx);
+		return ;
 	}
-	token = ft_strdup_2(str,*i,*i);
+	token = ft_strdup_2(str, *i, *i);
 	if (str[*i] == WHITE_SPACE)
-		add_node_to_lexer(lx,token,WHITE_SPACE, GENERAL);
+		add_node_to_lexer(lx, token, WHITE_SPACE, GENERAL);
 	else if (str[*i] == NEW_LINE)
-		add_node_to_lexer(lx,token,NEW_LINE, GENERAL);
+		add_node_to_lexer(lx, token, NEW_LINE, GENERAL);
 	else if (str[*i] == QOUTE)
-		add_node_to_lexer(lx,token,QOUTE, GENERAL);
+		add_node_to_lexer(lx, token, QOUTE, GENERAL);
 	else if (str[*i] == DOUBLE_QUOTE)
-		add_node_to_lexer(lx,token,DOUBLE_QUOTE, GENERAL);
+		add_node_to_lexer(lx, token, DOUBLE_QUOTE, GENERAL);
 	else if (str[*i] == ESCAPE)
-		add_node_to_lexer(lx,token,ESCAPE, GENERAL);
+		add_node_to_lexer(lx, token, ESCAPE, GENERAL);
 	else if (str[*i] == PIPE_LINE)
-		add_node_to_lexer(lx,token,PIPE_LINE, GENERAL);
+		add_node_to_lexer(lx, token, PIPE_LINE, GENERAL);
 	else if (str[*i] == TAB)
-		add_node_to_lexer(lx,token,TAB, GENERAL);
-	else if (str[*i] == REDIR_IN && str[(*i) + 1] != REDIR_IN && str[(*i) - 1] != REDIR_IN)
-		add_node_to_lexer(lx,token,REDIR_IN, GENERAL);
-	else if (str[*i] == REDIR_OUT && str[(*i) + 1] != REDIR_OUT && str[(*i) - 1] != REDIR_OUT)
-		add_node_to_lexer(lx,token,REDIR_OUT, GENERAL);
+		add_node_to_lexer(lx, token, TAB, GENERAL);
+	else if (str[*i] == REDIR_IN && str[(*i) + 1] != REDIR_IN && str[(*i)
+		- 1] != REDIR_IN)
+		add_node_to_lexer(lx, token, REDIR_IN, GENERAL);
+	else if (str[*i] == REDIR_OUT && str[(*i) + 1] != REDIR_OUT && str[(*i)
+		- 1] != REDIR_OUT)
+		add_node_to_lexer(lx, token, REDIR_OUT, GENERAL);
 	else if (str[*i] == REDIR_OUT && str[(*i) + 1] == REDIR_OUT)
 	{
-		add_node_to_lexer(lx,">>",D_REDIR_OUT,GENERAL);
+		add_node_to_lexer(lx, ">>", D_REDIR_OUT, GENERAL);
 		(*i)++;
 	}
 	else if (str[*i] == REDIR_IN && str[(*i) + 1] == REDIR_IN)
 	{
-		add_node_to_lexer(lx,"<<",HERE_DOC,GENERAL);
+		add_node_to_lexer(lx, "<<", HERE_DOC, GENERAL);
 		(*i)++;
 	}
 	(*i)++;
 }
 
-int is_alphabet(char c)
+int	is_alphabet(char c)
 {
-	if ((c >= 'a' && c <= 'z') || ( c >= 'A' && c <= 'z'))
-		return 0;
-	return(1);
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'z'))
+		return (0);
+	return (1);
 }
-void take_word(char *str, int *i, t_lexer *lx)
+void	take_word(char *str, int *i, t_lexer *lx)
 {
-	int start;
-	char *word;
+	int		start;
+	char	*word;
+
 	start = *i;
 	while (str[*i] && if_token(str[*i]) == 1)
 		(*i)++;
-	word = ft_strdup_2(str,start,*i-1);
-	add_node_to_lexer(lx,word,WORD,GENERAL);
+	word = ft_strdup_2(str, start, *i - 1);
+	add_node_to_lexer(lx, word, WORD, GENERAL);
 }
 void	give_state(t_lexer *lx)
 {
-	t_node *cur;
+	t_node	*cur;
+
 	cur = lx->head;
 	while (cur && cur->next)
 	{
-		if(cur->type == DOUBLE_QUOTE && cur->next)
+		if (cur->type == DOUBLE_QUOTE && cur->next)
 		{
 			cur = cur->next;
 			while (cur && cur->type != DOUBLE_QUOTE)
@@ -107,7 +113,7 @@ void	give_state(t_lexer *lx)
 				cur = cur->next;
 			}
 		}
-		else if(cur->type == QOUTE && cur->next)
+		else if (cur->type == QOUTE && cur->next)
 		{
 			cur = cur->next;
 			while (cur && cur->type != QOUTE)
@@ -116,7 +122,7 @@ void	give_state(t_lexer *lx)
 				cur = cur->next;
 			}
 		}
-		if(cur)
+		if (cur)
 			cur = cur->next;
 	}
 }
@@ -124,8 +130,8 @@ void	free_list(t_lexer *lst)
 {
 	t_node	*tmp;
 
-	if(!lst)
-		return;
+	if (!lst)
+		return ;
 	tmp = lst->head;
 	while (tmp)
 	{
@@ -137,33 +143,34 @@ void	free_list(t_lexer *lst)
 
 int	if_redirection(enum e_token type)
 {
-	if (type == REDIR_IN || type == REDIR_OUT
-		|| type == D_REDIR_OUT || type == HERE_DOC)
-			return(1);
-	return(0);
+	if (type == REDIR_IN || type == REDIR_OUT || type == D_REDIR_OUT
+		|| type == HERE_DOC)
+		return (1);
+	return (0);
 }
 
-t_node *skip_spaces(t_node *elem, char direction)
+t_node	*skip_spaces(t_node *elem, char direction)
 {
-	while (elem && ( elem->type == WHITE_SPACE || elem->type == TAB))
+	while (elem && (elem->type == WHITE_SPACE || elem->type == TAB))
 	{
-		if ( direction == 'l')
+		if (direction == 'l')
 			elem = elem->prev;
 		else if (direction == 'r')
 			elem = elem->next;
 	}
-	return(elem);
+	return (elem);
 }
-int pipe_err(t_node *elem)
+int	pipe_err(t_node *elem)
 {
-	t_node *next;
-	t_node *prev;
+	t_node	*next;
+	t_node	*prev;
 
-	next = skip_spaces(elem->next,'r');
-	prev = skip_spaces(elem->prev,'l');
-	if(!next || !prev || (next->type != WORD && if_redirection(next->type) == 0))
+	next = skip_spaces(elem->next, 'r');
+	prev = skip_spaces(elem->prev, 'l');
+	if (!next || !prev || (next->type != WORD
+			&& if_redirection(next->type) == 0))
 		return (1);
-	return(0);
+	return (0);
 }
 int	ft_perr(char *str, char *token)
 {
@@ -190,9 +197,9 @@ int	redir_err(t_node *ptr)
 	t_node	*nxt;
 
 	nxt = skip_spaces(ptr->next, 'r');
-	if (!nxt || (nxt->type != WORD && nxt->type != ENV && \
-		nxt->type != DOUBLE_QUOTE && nxt->type != QOUTE))
-			return (1);
+	if (!nxt || (nxt->type != WORD && nxt->type != ENV
+			&& nxt->type != DOUBLE_QUOTE && nxt->type != QOUTE))
+		return (1);
 	return (0);
 }
 t_node	*check_quotes(t_node **node, enum e_token quote)
@@ -214,20 +221,21 @@ int	syntax_error(t_lexer *lst)
 	t_node	*cur;
 
 	cur = lst->head;
-
 	while (cur)
 	{
 		if (cur->type == PIPE_LINE)
 		{
 			if (pipe_err(cur))
 				return (ft_perr("minishell: syntax error near "
-						"unexpected token `|'", 0));
+								"unexpected token `|'",
+								0));
 		}
 		else if (if_redirection(cur->type))
 		{
 			if (redir_err(cur))
 				return (ft_perr("minishell: syntax error near "
-						"unexpected token ", get_token(cur->type)));
+								"unexpected token ",
+								get_token(cur->type)));
 		}
 		else if (cur->type == DOUBLE_QUOTE || cur->type == QOUTE)
 		{
@@ -238,43 +246,45 @@ int	syntax_error(t_lexer *lst)
 	}
 	return (0);
 }
-void Join_node(char *content, t_node **first, t_node **last, enum e_state state, t_lexer *lx)
+void	Join_node(char *content, t_node **first, t_node **last,
+		enum e_state state, t_lexer *lx)
 {
-	t_node *new;
-	
+	t_node	*new;
+
 	new = malloc(sizeof(t_node));
-	new->content = ft_substr(content,0,ft_strlen(content));
+	new->content = ft_substr(content, 0, ft_strlen(content));
 	new->next = NULL;
 	new->prev = NULL;
 	new->len = ft_strlen(new->content);
-	if(state == IN_DQUOTE)
+	if (state == IN_DQUOTE)
 		new->type = DOUBLE_QUOTE;
 	else
 		new->type = QOUTE;
 	new->state = state;
-	if(*first)
+	if (*first)
 		(*first)->next = new;
 	new->prev = (*first);
 	new->next = (*last);
-	if(*last)
+	if (*last)
 		(*last)->prev = new;
-	if(!(*first))
+	if (!(*first))
 		lx->head = new;
 }
-void take_in_dq(t_node **cur, enum e_state state, t_lexer *lx)
+void	take_in_dq(t_node **cur, enum e_state state, t_lexer *lx)
 {
-	char *new_cont;
-	t_node *tmp;
-	t_node *ptr;
+	char	*new_cont;
+	t_node	*tmp;
+	t_node	*ptr;
+
 	tmp = (*cur);
-	new_cont = ft_calloc(1,1);
+	new_cont = ft_calloc(1, 1);
 	(*cur) = (*cur)->next;
 	while ((*cur) && (*cur)->state == state)
 	{
-		new_cont = ft_strjoin(new_cont,(*cur)->content);
+		new_cont = ft_strjoin(new_cont, (*cur)->content);
 		(*cur) = (*cur)->next;
 	}
-	Join_node(new_cont,&tmp->prev,cur,state, lx);
+	Join_node(new_cont, &tmp->prev, cur, state, lx);
 	while (tmp && tmp->state == state)
 	{
 		free(tmp->content);
@@ -284,37 +294,40 @@ void take_in_dq(t_node **cur, enum e_state state, t_lexer *lx)
 		lx->size -= 1;
 	}
 }
-void join_quotes(t_lexer *lx)
+void	join_quotes(t_lexer *lx)
 {
-	t_node *cur;
+	t_node	*cur;
+
 	cur = lx->head;
-	while(cur)
+	while (cur)
 	{
-		if(cur->type == DOUBLE_QUOTE)
-			take_in_dq(&cur,IN_DQUOTE,lx);
-		else if(cur->type == QOUTE)
-			take_in_dq(&cur,IN_SQUOTE,lx);
+		if (cur->type == DOUBLE_QUOTE)
+			take_in_dq(&cur, IN_DQUOTE, lx);
+		else if (cur->type == QOUTE)
+			take_in_dq(&cur, IN_SQUOTE, lx);
 		else
 			cur = cur->next;
 	}
 }
-void delete_white_space(t_lexer *lx)
+void	delete_white_space(t_lexer *lx)
 {
-	t_node *cur;
-	t_node *tmp;
+	t_node	*cur;
+	t_node	*tmp;
+
 	cur = lx->head;
 	while (cur)
 	{
-		if(cur->type == WHITE_SPACE || cur->type == TAB || (cur->type == QOUTE && !cur->len)  || (cur->type == DOUBLE_QUOTE && !cur->len))
+		if (cur->type == WHITE_SPACE || cur->type == TAB || (cur->type == QOUTE
+				&& !cur->len) || (cur->type == DOUBLE_QUOTE && !cur->len))
 		{
 			tmp = cur->next;
-			if(cur->prev)
+			if (cur->prev)
 				cur->prev->next = cur->next;
-			if(cur->next)
+			if (cur->next)
 				cur->next->prev = cur->prev;
-			if(cur == lx->head)
+			if (cur == lx->head)
 				lx->head = cur->next;
-			if(cur == lx->tail)
+			if (cur == lx->tail)
 				lx->tail = cur->prev;
 			free(cur->content);
 			free(cur);
@@ -325,40 +338,43 @@ void delete_white_space(t_lexer *lx)
 			cur = cur->next;
 	}
 }
-char *get_env(t_env *env,char *str)
+char	*get_env(t_env *env, char *str)
 {
-	t_env 	*cur;
+	t_env	*cur;
 	char	*s;
-	
-	s = ft_strdup(str+1);
+
+	s = ft_strdup(str + 1);
 	cur = env;
 	while (cur)
 	{
-		if(!ft_strncmp(cur->name,(str+1), ft_strlen(s)))
-			return(cur->value);
+		if (!ft_strncmp(cur->name, (str + 1), ft_strlen(s)))
+			return (cur->value);
 		cur = cur->next;
 	}
 	free(s);
-	return(NULL);
+	return (NULL);
 }
 
-void var_from_env(t_env *env,t_lexer *lx)
+void	var_from_env(t_env *env, t_lexer *lx)
 {
-	t_node *cur;
+	t_node	*cur;
+
 	cur = lx->head;
 	while (cur)
 	{
-		if(cur->type == ENV && (cur->state == GENERAL || cur->state == IN_DQUOTE) && ft_strlen(cur->content) > 1)
+		if (cur->type == ENV && (cur->state == GENERAL
+				|| cur->state == IN_DQUOTE) && ft_strlen(cur->content) > 1)
 		{
-			if(cur->content[1] == '?' )
+			if (cur->content[1] == '?')
 			{
-				cur->content = ft_strjoin(ft_itoa(g_exit_status),cur->content+2);
+				cur->content = ft_strjoin(ft_itoa(g_exit_status), cur->content
+						+ 2);
 				cur->len = ft_strlen(cur->content);
 				cur->type = ENV;
 			}
 			else
-			{	
-				cur->content = ft_strdup(get_env(env,cur->content));
+			{
+				cur->content = ft_strdup(get_env(env, cur->content));
 				cur->len = ft_strlen(cur->content);
 				cur->type = ENV;
 			}
@@ -367,82 +383,81 @@ void var_from_env(t_env *env,t_lexer *lx)
 	}
 }
 
-int lexer(char *str, t_lexer *lx, t_env *env)
+int	lexer(char *str, t_lexer *lx, t_env *env)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	(void)env;
 	while (str && str[i])
 	{
-		if(str[i] && if_token(str[i]) == 1)
-			take_word(str,&i,lx);
-		else if(if_token(str[i]) == 0)
-			take_token(str,&i,lx);
+		if (str[i] && if_token(str[i]) == 1)
+			take_word(str, &i, lx);
+		else if (if_token(str[i]) == 0)
+			take_token(str, &i, lx);
 		else
 			i++;
 	}
 	give_state(lx);
-	var_from_env(env,lx);
+	var_from_env(env, lx);
 	if (syntax_error(lx))
 		return (g_exit_status = 258, 1);
-	return(g_exit_status = 0, 0);
+	return (g_exit_status = 0, 0);
 }
-void ft_initialisation(t_lexer *lx)
+void	ft_initialisation(t_lexer *lx)
 {
-	lx->head =NULL;
-	lx->tail=NULL;
+	lx->head = NULL;
+	lx->tail = NULL;
 	lx->size = 0;
 }
-void ft_print_lexer(t_node **head)
+void	ft_print_lexer(t_node **head)
 {
-    t_node *cur = *head;
-    char general[] = "GENERAL";
-    char in_s_quote[] = "IN_S_QUOTE";
-    char in_d_quote[] = "IN_D_QUOTE";
-    char *state;
+	t_node	*cur;
+	char	*state;
 
-    printf("-----------------------------------------------------------\n");
-    printf("|%-17s|%3s|%15s|      token    |\n", "content", "len", "state");
-    printf("-----------------------------------------------------------\n");
-
-    while (cur)
-    {
-        if (cur->state == IN_DQUOTE)
-            state = in_d_quote;
-        else if (cur->state == IN_SQUOTE)
-            state = in_s_quote;
-        else if (cur->state == GENERAL)
-            state = general;
-
-        printf("|%-17s|%4d|%-15s|", cur->content, cur->len, state);
-
-        if (cur->type == WORD)
-            printf("      WORD    |\n");
-        else if (cur->type == WHITE_SPACE)
-            printf("      WHITE_SPACE    |\n");
-        else if (cur->type == NEW_LINE)
-            printf("       NEW_LINE     |\n");
-        else if (cur->type == QOUTE)
-            printf("      QOUTE    |\n");
-        else if (cur->type == DOUBLE_QUOTE)
-            printf("     DOUBLE_QUOTE     |\n");
-        else if (cur->type == ESCAPE)
-            printf("      ESCAPE     |\n");
-        else if (cur->type == ENV)
-            printf("     ENV    |\n");
-        else if (cur->type == PIPE_LINE)
-            printf("     PIPE_LINE     |\n");
-        else if (cur->type == REDIR_IN)
-            printf("    REDIR_IN     |\n");
-        else if (cur->type == TAB)
-            printf("    TAB     |\n");
-        else if (cur->type == REDIR_OUT)
-            printf("     REDIR_OUT    |\n");
-        else if (cur->type == D_REDIR_OUT)
-            printf("     DREDIR_OUT     |\n");
-        else if (cur->type == HERE_DOC)
-            printf("    HERE_DOC    |\n");
-
-        printf("-----------------------------------------------------------\n");
-        cur = cur->next;
-    }
+	cur = *head;
+	char general[] = "GENERAL";
+	char in_s_quote[] = "IN_S_QUOTE";
+	char in_d_quote[] = "IN_D_QUOTE";
+	printf("-----------------------------------------------------------\n");
+	printf("|%-17s|%3s|%15s|      token    |\n", "content", "len", "state");
+	printf("-----------------------------------------------------------\n");
+	while (cur)
+	{
+		if (cur->state == IN_DQUOTE)
+			state = in_d_quote;
+		else if (cur->state == IN_SQUOTE)
+			state = in_s_quote;
+		else if (cur->state == GENERAL)
+			state = general;
+		printf("|%-17s|%4d|%-15s|", cur->content, cur->len, state);
+		if (cur->type == WORD)
+			printf("      WORD    |\n");
+		else if (cur->type == WHITE_SPACE)
+			printf("      WHITE_SPACE    |\n");
+		else if (cur->type == NEW_LINE)
+			printf("       NEW_LINE     |\n");
+		else if (cur->type == QOUTE)
+			printf("      QOUTE    |\n");
+		else if (cur->type == DOUBLE_QUOTE)
+			printf("     DOUBLE_QUOTE     |\n");
+		else if (cur->type == ESCAPE)
+			printf("      ESCAPE     |\n");
+		else if (cur->type == ENV)
+			printf("     ENV    |\n");
+		else if (cur->type == PIPE_LINE)
+			printf("     PIPE_LINE     |\n");
+		else if (cur->type == REDIR_IN)
+			printf("    REDIR_IN     |\n");
+		else if (cur->type == TAB)
+			printf("    TAB     |\n");
+		else if (cur->type == REDIR_OUT)
+			printf("     REDIR_OUT    |\n");
+		else if (cur->type == D_REDIR_OUT)
+			printf("     DREDIR_OUT     |\n");
+		else if (cur->type == HERE_DOC)
+			printf("    HERE_DOC    |\n");
+		printf("-----------------------------------------------------------\n");
+		cur = cur->next;
+	}
 }

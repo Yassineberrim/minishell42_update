@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slazar <slazar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 13:46:56 by slazar            #+#    #+#             */
-/*   Updated: 2022/10/30 12:52:00 by slazar           ###   ########.fr       */
+/*   Updated: 2023/10/02 14:16:58 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**ft_split(char const *s, char c)
 		return (0);
 	tab = (char **)ft_calloc(word(s, c) + 1, sizeof(char *));
 	if (!tab)
-		return (0);
+		return (0);	
 	while (s[i])
 	{
 		while (s[i] && s[i] == c)

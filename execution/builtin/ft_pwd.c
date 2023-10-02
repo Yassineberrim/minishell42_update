@@ -12,17 +12,17 @@
 
 #include "./../../minishell.h"
 
-int ft_pwd(int fd_out)
+int	ft_pwd(int fd_out)
 {
-    char current_dir[100];
-    
-    if(getcwd(current_dir, 100))
-    {
-        ft_putstr_fd(current_dir, fd_out);
-        write(fd_out, "\n", 1);
-        return 1;
-    }
-    ft_putstr_fd(current_dir, fd_out);
-    write(fd_out, "\n", 1);
-    return 0;
+	char	current_dir[100];
+
+	if (getcwd(current_dir, 100))
+	{
+		ft_putstr_fd(current_dir, fd_out);
+		write(fd_out, "\n", 1);
+		return (1);
+	}
+	ft_putstr_fd(current_dir, fd_out);
+	write(fd_out, "\n", 1);
+	return (0);
 }

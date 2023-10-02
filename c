@@ -1,9 +1,17 @@
 Makefile
 a
+as
+b
 c
 env.c
 env.o
 execution
+file
+file1
+file55
+gg
+hey
+hj
 lexer.c
 lexer.o
 main.c
@@ -11,7 +19,6 @@ main.o
 minishell
 minishell.h
 my_libft
-ok
 signal.c
 utils.c
 utils.o

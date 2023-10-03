@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:17 by yberrim           #+#    #+#             */
-/*   Updated: 2023/10/02 19:45:55 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/03 20:25:52 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,19 @@
 static int	exec(t_cmd *cmd, char **env, int **pipe_fd)
 {
 	if (cmd->fd_out != 1)
+	{
 		dup2(cmd->fd_out, 1);
+		close(cmd->fd_out); 
+	}
 	if (cmd->fd_in != 0)
+	{
 		dup2(cmd->fd_in, 0);
+		close(cmd->fd_in);
+	}
 	close(*pipe_fd[0]);
 	close(*pipe_fd[1]);
 	execve(cmd->cmd_path, cmd->cmd, env);
+	exit(g_exit_status = 127);
 	return (g_exit_status = 127);
 }
 
@@ -75,7 +82,6 @@ int	execution_proto(t_cmd *cmd, char **env)
 		free(pipe_fd);
 		cmd = cmd->next;
 	}
-	while (wait(&g_exit_status) > 0)
-		;
+	while (wait(&g_exit_status) > 0);
 	return (g_exit_status);
 }

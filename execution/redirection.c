@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:23:17 by yberrim           #+#    #+#             */
-/*   Updated: 2023/10/02 22:04:19 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/03 20:13:04 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	check_writout(t_cmd *cmd)
 
 void	check_appendout(t_cmd *cmd)
 {
-	cmd->fd_out = open(cmd->out_file, O_WRONLY | O_APPEND, 0644);
+	cmd->fd_out = open(cmd->out_file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (cmd->fd_out == -1)
 		return ;
 }

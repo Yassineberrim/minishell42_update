@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/yberrim/Desktop/minishell42_update",
+            "binaryPath": "/Users/yberrim/Desktop/minishell42_update/minishell",
+            "binaryArgs": []
+        }
+    ]
+}

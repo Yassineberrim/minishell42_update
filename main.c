@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:24:41 by slazar            #+#    #+#             */
-/*   Updated: 2023/10/02 20:04:57 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/04 23:16:02 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,30 @@ void	check_next_next(t_node *cur)
 		close(tmp_fd);
 	}
 }
+void here_doc(t_node **cur, t_cmd **cmd)
+{
+    int        fd;
+    char    *line;
+    char    *tmp;
+
+    fd = open("tmp", O_CREAT | O_WRONLY | O_APPEND, 0644);
+    while (1)
+    {
+        line = readline(">");
+        if (ft_strcmp(line, (*cur)->next->content) == 0)
+        {
+            free(line);
+            break ;
+        }
+        tmp = ft_strjoin(line, "\n");
+        write(fd, tmp, ft_strlen(tmp));
+        free(tmp);
+    }
+    close(fd);
+    (*cmd)->in_file = ft_strdup(tmp);
+    (*cmd)->in_redir_type = HEREDOC;
+    (*cur) = (*cur)->next->next;
+}
 void	create_cmd(t_lexer *lx, t_cmd *cmd)
 {
 	t_node	*cur;
@@ -131,6 +155,11 @@ void	create_cmd(t_lexer *lx, t_cmd *cmd)
 	cmd->fd_out = 1;
 	while (cur)
 	{
+		if(cur->type == HERE_DOC)
+        {
+            here_doc(&cur, &cmd);
+            continue ;
+        }
 		if (cur->type == REDIR_IN || cur->type == REDIR_OUT
 			|| cur->type == D_REDIR_OUT || cur->type == HERE_DOC)
 		{

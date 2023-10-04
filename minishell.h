@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:15:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/10/02 20:42:28 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/03 20:48:22 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_cmd
 	int fd_in; // 0
 	int fd_out; // 1
 	int has_pipe; // 0
+	int	child_pid;
 	// >> ola >
 	out_redirs out_redir_type; // out_redir = WRITEOUT
     // << ola <

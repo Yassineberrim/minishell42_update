@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:17 by yberrim           #+#    #+#             */
-/*   Updated: 2023/10/03 20:25:52 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/04 23:18:06 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ int	built_in(t_cmd *cmd)
 
 int	execution_proto(t_cmd *cmd, char **env)
 {
-	int *pipe_fd;
-	int child_pid;
+	int	*pipe_fd;
 
 	while (cmd)
 	{
@@ -75,13 +74,14 @@ int	execution_proto(t_cmd *cmd, char **env)
 		else if ((is_buildin(cmd) || !cmd->cmd_path) && built_in(cmd) != -1)
 			return (g_exit_status);
 		check_redirections(cmd);
-		child_pid = fork();
-		if (child_pid == 0)
+		cmd->child_pid = fork();
+		if (cmd->child_pid == 0)
 			return (exec(cmd, env, &pipe_fd));
 		ft_close(cmd, &pipe_fd);
 		free(pipe_fd);
 		cmd = cmd->next;
 	}
-	while (wait(&g_exit_status) > 0);
+	while (wait (&g_exit_status) > 0)
+		;
 	return (g_exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:52:08 by yberrim           #+#    #+#             */
-/*   Updated: 2023/10/02 15:41:01 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/05 01:28:16 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	check_flag(char *str)
 {
 	int	i;
 
+	if(!str)
+		return (0);
 	i = 0;
 	if (str[i++] != '-')
 		return (0);

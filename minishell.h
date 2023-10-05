@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 23:15:30 by slazar            #+#    #+#             */
-/*   Updated: 2023/10/03 20:48:22 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/05 01:18:07 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ typedef struct s_cmd
 	in_redirs in_redir_type; // 0
     char* in_file; // NULL
     char* out_file; // ok3.txt
-	int herdoc_fd; 
+	int herdoc_fd;
 	t_env *env; // envierement
     struct s_cmd *next;
 } t_cmd;

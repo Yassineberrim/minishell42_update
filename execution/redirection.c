@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:23:17 by yberrim           #+#    #+#             */
-/*   Updated: 2023/10/04 22:00:19 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/05 02:21:18 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,13 @@ void	check_readin(t_cmd *cmd)
 		return ;
 }
 
+
 void	check_redirections(t_cmd *cmd)
 {
-	int	pipefd[2];
 	if (cmd->out_redir_type == WRITEOUT)
 		check_writout(cmd);
 	if (cmd->out_redir_type == APPENDOUT)
 		check_appendout(cmd);
-	if (cmd->in_redir_type == READIN)
+	if (cmd->in_redir_type == READIN || cmd->in_redir_type == HEREDOC)
 		check_readin(cmd);
-	if (cmd->in_redir_type == HEREDOC) 
-    {
-        pipe(pipefd);
-        write(pipefd[1], cmd->in_file, ft_strlen(cmd->in_file));
-        close(pipefd[1]);
-        cmd->fd_in = pipefd[0];
-    }
 }

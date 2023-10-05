@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:24:41 by slazar            #+#    #+#             */
-/*   Updated: 2023/10/04 23:16:02 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/05 02:16:23 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void here_doc(t_node **cur, t_cmd **cmd)
     char    *line;
     char    *tmp;
 
-    fd = open("tmp", O_CREAT | O_WRONLY | O_APPEND, 0644);
+    fd = open("/tmp/tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
     while (1)
     {
         line = readline(">");
@@ -139,7 +139,7 @@ void here_doc(t_node **cur, t_cmd **cmd)
         free(tmp);
     }
     close(fd);
-    (*cmd)->in_file = ft_strdup(tmp);
+    (*cmd)->in_file = ft_strdup("/tmp/tmp");
     (*cmd)->in_redir_type = HEREDOC;
     (*cur) = (*cur)->next->next;
 }

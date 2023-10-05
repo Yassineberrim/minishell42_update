@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:23:17 by yberrim           #+#    #+#             */
-/*   Updated: 2023/10/05 02:21:18 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/10/05 18:54:37 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	check_readin(t_cmd *cmd)
 	if (cmd->fd_out == -1)
 		return ;
 }
-
 
 void	check_redirections(t_cmd *cmd)
 {
